@@ -4,7 +4,7 @@ if [[ $1 = 'run' ]];
       /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main_jRun.m
   elif [[ $1 = 'test' ]];
     then
-      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/Main_jTest.m
+      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main_jTest.m
   elif [[ $1 = 'delivery' ]];
     then
       tar fcz /root/matlab/$7/$7.tar.gz --absolute-names /root/matlab/$7/results/
