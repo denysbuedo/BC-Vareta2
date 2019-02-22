@@ -64,60 +64,52 @@ node{
         
 	}
   
-//	stage('DATA PROCESSING (BC-Vareta)'){
-//  		
-//  		//--- Starting ssh agent on Matlab Server ---
-//		sshagent(['fsf_id_rsa']) { 
-//		
-//			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
-//			@file: jenkins.sh
-//        	@Parameter{
-//    			$1-action [run, delivery]
-//        		$2-Name of the person who run the task ($owner_name)
-//        		$3-EEG file ($eeg)
-//        		$4-LeadField ($leadfield)
-//        		$5-Surface ($surface)
-//        		$6-Scalp ($scalp) 
-//			} ---*/           
-//       	echo "--- Run Matlab command ---"
-//        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-//        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh run $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
-//		}
-//	}
-//  
-//	stage('DATA DELIVERY'){
-//		
-//		//--- Starting ssh agent on Matlab Server ---
-//		sshagent(['fsf_id_rsa']) { 
-//		
-//			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
-//			@file: jenkins.sh
-//        	@Parameter{
-//    			$1-action [run, delivery]
-//        		$2-Name of the person who run the task ($owner_name)
-//        		$3-EEG file ($eeg)
-//        		$4-LeadField ($leadfield)
-//        		$5-Surface ($surface)
-//        		$6-Scalp ($scalp) 
-//			} ---*/           
-//       	echo "--- Tar and copy files result to FTP Server ---"
-//        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-//        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh delivery $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
-//		}
-//	}
-//  
-//	stage('NOTIFICATION AND REPORT'){
-//    	
-//    	//--- Sending notification email ---//
-////    	emailext (
-////   		subject: "Job $JOB_NAME ${env.BUILD_NUMBER}'",
-////    		body: """<p> Done!!! </p>""",
-////    		to: "$notif_email",
-////    		from: "buedo@neuroinformatics-collaboratory.org"
-////		)
-//    	
-//    	//--- Inserting data in influxdb database ---/
-//		step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
-//	}
+	stage('DATA PROCESSING (BC-Vareta)'){
+  		
+  		//--- Starting ssh agent on Matlab Server ---
+		sshagent(['fsf_id_rsa']) { 
+		
+			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
+			@file: jenkins.sh
+        	@Parameter{
+    			$1-action [run, delivery]
+        		$2-Name of the person who run the task ($owner_name)
+        		$3-EEG file ($eeg)
+        		$4-LeadField ($leadfield)
+        		$5-Surface ($surface)
+        		$6-Scalp ($scalp) 
+			} ---*/           
+       		echo "--- Run Matlab command ---"
+        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh run $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
+		}
+	}
+  
+	stage('DATA DELIVERY'){
+		
+		//--- Starting ssh agent on Matlab Server ---
+		sshagent(['fsf_id_rsa']) { 
+		
+			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
+			@file: jenkins.sh
+        	@Parameter{
+    			$1-action [run, delivery]
+        		$2-Name of the person who run the task ($owner_name)
+        		$3-EEG file ($eeg)
+        		$4-LeadField ($leadfield)
+        		$5-Surface ($surface)
+        		$6-Scalp ($scalp) 
+			} ---*/           
+       		echo "--- Tar and copy files result to FTP Server ---"
+        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh delivery $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
+		}
+	}
+  
+	stage('NOTIFICATION AND REPORT'){
+    	
+    	//--- Inserting data in influxdb database ---/
+		step([$class: 'InfluxDbPublisher', customData: null, customDataMap: null, customPrefix: null, target: 'influxdb'])
+	}
 
 }
