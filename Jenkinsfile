@@ -34,11 +34,6 @@ node{
 	def currentBuildName = "BUILD#$build_ID-$owner_name"
 	currentBuild.displayName = "$currentBuildName"
 	
-	stage('CHECKOUT CODE (BC-Vareta)'){
-	
-       
-    }
-		
 	stage('DATA AND CODE ACQUISITION'){
   		
   		 //--- Downloading BC-Vareta code from GitHub reporitory ---
