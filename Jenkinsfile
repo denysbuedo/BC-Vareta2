@@ -34,7 +34,7 @@ node{
 	def currentBuildName = "BUILD#$build_ID-$owner_name"
 	currentBuild.displayName = "$currentBuildName"
 	
-	stage('DATA AND CODE ACQUISITION'){
+	stage('DATA ACQUISITION'){
   		
   		 //--- Downloading BC-Vareta code from GitHub reporitory ---
         checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_dbuedo-id', url: 'https://github.com/denysbuedo/BC-Vareta2.git']]])
@@ -54,15 +54,13 @@ node{
 		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
 		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
 		
-		
-  		
-//  		//--- Starting ssh agent on Matlab server ---
-//		sshagent(['fsf_id_rsa']) {      
-//
-//			//--- Copying de data file to External_data folder in Matlab Server --- 
-//			sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-//			sh "scp $data_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run"
-//        } 
+  		//--- Starting ssh agent on Matlab server ---
+		sshagent(['fsf_id_rsa']) {      
+
+			//--- Copying de data file to External_data folder in Matlab Server --- 
+			sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+			sh "scp -r $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName root@192.168.17.129:/root/matlab/"
+        } 
         
 	}
   
