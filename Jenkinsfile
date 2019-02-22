@@ -36,7 +36,8 @@ node{
 	
 	stage('CHECKOUT CODE (BC-Vareta)'){
 	
-        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_dbuedo-id', url: 'https://github.com/denysbuedo/BC-VARETA-toolbox-master.git']]])
+        //--- Downloading BC-Vareta code from GitHub reporitory ---
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'github_dbuedo-id', url: 'https://github.com/denysbuedo/BC-Vareta2.git']]])
     }
 		
 	stage('DATA ACQUISITION'){
@@ -44,28 +45,41 @@ node{
   		//--- Starting ssh agent on Matlab server ---
 		sshagent(['fsf_id_rsa']) {      
 			
-			//--- Creating de data file ---
-			def data_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt")
-			def eeg_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg")
-			def leadfield_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield")
-			def surface_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface")
-			def scalp_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp")
+//			//--- Creating de data file ---
+//			def data_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt")
+//			def eeg_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg")
+//			def leadfield_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield")
+//			def surface_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface")
+//			def scalp_file =  new File  ("$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp")
+			
+			//--- Creating current matlab workspace
+			sh "mkdir /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data"
+			sh "mkdir /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			sh "mkdir /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/test"
+			sh "mkdir /$JENKINS_HOME/jobs/$JOB_NAME/workspace/result"
+			
+			//--- Moving data file to matlab workspace
+			sh "mv /$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			sh "mv /$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			sh "mv /$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			sh "mv /$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			sh "mv /$JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp /$JENKINS_HOME/jobs/$JOB_NAME/workspace/data/run"
+			
 			
 			//--- Copying de data file to External_data folder in Matlab Server --- 
-			sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-			sh "scp $data_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run"
-			sh "scp $eeg_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
-			sh "scp $leadfield_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
-			sh "scp $surface_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
-			sh "scp $scalp_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
+//			sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+//			sh "scp $data_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run"
+//			sh "scp $eeg_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
+//			sh "scp $leadfield_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
+//			sh "scp $surface_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
+//			sh "scp $scalp_file root@192.168.17.129:/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run/"
 			
-			echo "Voy a borrar workspace"
-			//--- Remove data file in job workspace ---
-			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt"
-			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg"
-			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield"
-			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface"
-			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp"
+//			//--- Remove data file in job workspace ---
+//			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt"
+//			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg"
+//			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield"
+//			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface"
+//			sh "rm -f $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp"
         } 
         
         
@@ -74,7 +88,7 @@ node{
 	stage('DATA PROCESSING (BC-Vareta)'){
   		
   		//--- Starting ssh agent on Matlab Server ---
-		sshagent(['fsf_id_rsa']) { 
+//		sshagent(['fsf_id_rsa']) { 
 		
 			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
 			@file: jenkins.sh
@@ -86,16 +100,16 @@ node{
         		$5-Surface ($surface)
         		$6-Scalp ($scalp) 
 			} ---*/           
-       		echo "--- Run Matlab command ---"
-        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh run $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
-		}
+//       	echo "--- Run Matlab command ---"
+//        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+//        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh run $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
+//		}
 	}
   
 	stage('DATA DELIVERY'){
 		
 		//--- Starting ssh agent on Matlab Server ---
-		sshagent(['fsf_id_rsa']) { 
+//		sshagent(['fsf_id_rsa']) { 
 		
 			/*--- Goal: Execute the matlab command, package and copy the results in the FTP server and clean the workspace.  
 			@file: jenkins.sh
@@ -107,10 +121,10 @@ node{
         		$5-Surface ($surface)
         		$6-Scalp ($scalp) 
 			} ---*/           
-       		echo "--- Tar and copy files result to FTP Server ---"
-        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh delivery $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
-		}
+//       	echo "--- Tar and copy files result to FTP Server ---"
+//        	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
+//        	sh "ssh root@192.168.17.129 /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/jenkins.sh delivery $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
+//		}
 	}
   
 	stage('NOTIFICATION AND REPORT'){
