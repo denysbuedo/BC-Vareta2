@@ -1,5 +1,4 @@
 %function [] = Main()
-
 %% BC-VARETA toolbox v8.1
 
 % Includes the routines of the Brain Connectivity Variable Resolution
@@ -17,14 +16,11 @@
 % Date: September 15, 2018
 
 %% cleaning...
-clear all;
 clc;
 close all;
+load('mycolormap_brain_basic_conn.mat');
 
 %% loading data...
-load('data/mycolormap_brain_basic_conn.mat');
-home=cd;
-cd /root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/data/run
 x=textread('data.txt','%s','whitespace', '')
 cadena=cell2mat(x);
 espacios = [];
@@ -55,7 +51,7 @@ load(SCALP_file);
 % elect_58_343 = a.
 % S_h          = a.
 
-cd(home);
+%cd(home);
 
 Input_flat = 0;
 
@@ -89,7 +85,15 @@ set(gca,'Color','k','XColor','w','YColor','w');
 ylabel('PSD (dB)','Color','w');
 xlabel('Freq. (Hz)','Color','w');
 title('Power Spectral Density','Color','w');
-savefig('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/Power_Spectral_Density'),close all;
+
+homedir =cd; 
+resultdir = [homedir,'/result/'];
+cd(resultdir)
+
+savefig('Power_Spectral_Density'),close all;
+
+cd(homedir)
+
 pause(1e-10);
 %% inverse covariance matrix...
 Nelec = size(K_6k,1);
@@ -113,7 +117,15 @@ colormap(gca,cmap_a);
 az = 0; el = 0;
 view(az, el);
 title('Scalp','Color','w','FontSize',16);
-savefig('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/Scalp_1'),close all;
+
+homedir =cd; 
+resultdir = [homedir,'/result/'];
+cd(resultdir)
+
+savefig('Scalp_1'),close all;
+
+cd(homedir)
+
 temp_diag  = diag(diag(abs(Svv_inv)));
 temp_ndiag = abs(Svv_inv)-temp_diag;
 temp_ndiag = temp_ndiag/max(temp_ndiag(:));
@@ -133,7 +145,7 @@ colormap(gca,cmap_c);
 colorbar;
 axis square;
 title('Scalp','Color','w','FontSize',16);
-savefig('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/Scalp_2'),close all;
+savefig('Scalp_2'),close all;
 pause(1e-12);
 %% bc-vareta toolbox...
 [ThetaJJ,SJJ,indms] = bcvareta(Svv,K_6k,Nseg,S_6k.Vertices,S_6k.Faces);
@@ -149,7 +161,15 @@ az = 0; el = 0;
 view(az,el);
 colormap(gca,cmap_a);
 title('BC-VARETA','Color','w','FontSize',16);
-savefig('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/BC_VARETA_1'),close all;
+
+homedir =cd; 
+resultdir = [homedir,'/result/'];
+cd(resultdir)
+
+savefig('BC_VARETA_1'),close all;
+
+cd(homedir);
+
 temp_iv    = abs(SJJ);
 connect_iv = abs(ThetaJJ);
 temp       = abs(connect_iv);
@@ -176,8 +196,13 @@ colorbar;
 colormap(gca,cmap_c);
 axis square;
 title('BC-VARETA','Color','w','FontSize',16);
-savefig('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/BC_VARETA_2'),close all;
+
+
+homedir =cd; 
+resultdir = [homedir,'/result/'];
+cd(resultdir)
+
+savefig('BC_VARETA_2'),close all;
 pause(1e-12);
 %% saving...
-save('/root/matlab/BC-VARETA-toolbox-master/BC-VARETA-toolbox-master/results/EEG_real.mat','ThetaJJ','SJJ','indms');
-
+save('EEG_real.mat','ThetaJJ','SJJ','indms');
