@@ -1,10 +1,10 @@
 #!/bin/bash
 if [[ $1 = 'run' ]];
   then
-      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main_jRun.m
+      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main.m
   elif [[ $1 = 'test' ]];
     then
-      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main_jTest.m
+      /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main.m
   elif [[ $1 = 'delivery' ]];
     then
       tar fcz /root/matlab/$7/$7.tar.gz --absolute-names /root/matlab/$7/results/

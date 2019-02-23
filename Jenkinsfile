@@ -41,18 +41,14 @@ node{
   		
   		//--- Creating current matlab workspace
   		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
-  		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data"
-  		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
-  		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/test"
-  		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/result"
 		
 		//--- Moving data files to matlab workspace
 		sh "mv $JENKINS_HOME/jobs/$JOB_NAME/workspace/* $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
-		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
-		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
-		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
-		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
-		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data/run"
+		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/data.txt $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
+		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
+		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
+		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$surface $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
+		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$scalp $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
 		
   		//--- Starting ssh agent on Matlab server ---
 		sshagent(['fsf_id_rsa']) {      
