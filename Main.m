@@ -1,4 +1,3 @@
-%function [] = Main()
 %% BC-VARETA toolbox v8.1
 
 % Includes the routines of the Brain Connectivity Variable Resolution
@@ -14,25 +13,29 @@
 % - Pedro A. Valdes Sosa
 
 % Date: September 15, 2018
+%%
 
-%% cleaning...
+% cleaning...
 clc;
 close all;
-load('mycolormap_brain_basic_conn.mat');
 
-%% loading data...
-x=textread('data.txt','%s','whitespace', '')
-cadena=cell2mat(x);
-espacios = [];
-for i=1:length(cadena)
-    if cadena(i)==' '
-        espacios = [espacios,i];
-    end
-end
-EEG_file       = [cadena(1:espacios(1)-1)];
-LEADFIELD_file = [cadena(espacios(1)+1:espacios(2)-1)];
-SURFACE_file   = [cadena(espacios(2)+1:espacios(3)-1)];
-SCALP_file     = [cadena(espacios(3)+1:end-1)];
+% Get current OS, data and result folder
+resultFolderByOS = '/result/';
+dataFolderBySO = 'data/';
+if ispc
+    resultFolderByOS = '\result\'; 
+    dataFolderBySO = 'data\';
+end 
+
+% Loading Color Map file
+mycolormap = string([dataFolderBySO,'mycolormap_brain_basic_conn.mat']);
+load(mycolormap);
+
+% Loading data 
+EEG_file = string([dataFolderBySO, getData('EEG')]);
+LEADFIELD_file = string([dataFolderBySO, getData('LeadField')]);
+SURFACE_file = string([dataFolderBySO, getData('Surface')]);
+SCALP_file = string([dataFolderBySO, getData('Scalp')]);
 
 %[filename_eeg, pathname] = uigetfile({'data'},'Pick the EEG data');
 data = load([EEG_file]);
@@ -51,10 +54,7 @@ load(SCALP_file);
 % elect_58_343 = a.
 % S_h          = a.
 
-%cd(home);
-
 Input_flat = 0;
-
 
 %% initial values...
 [Ne1,Np1] = size(K_6k);
@@ -62,13 +62,17 @@ Nseg      = 5e2;
 snr       = 1;
 snr_ch    = 1;
 verbosity = 1;
+
 %% estimating cross-spectra...
 disp('estimating cross-spectra for EEG data...');
-[Svv_channel,F,Nseg,PSD] = xspectrum(data,200,[],[]);                 % estimates the Cross Spectrum of the input M/EEG data
+
+% estimates the Cross Spectrum of the input M/EEG data
+[Svv_channel,F,Nseg,PSD] = xspectrum(data,200,[],[]);
 disp('applying average reference...');
 Nf = length(F);
 for jj = 1:Nf
-    [Svv_channel(:,:,jj),K_6k] = applying_reference(Svv_channel(:,:,jj),K_6k);    % applying average reference...
+    % applying average reference...
+    [Svv_channel(:,:,jj),K_6k] = applying_reference(Svv_channel(:,:,jj),K_6k);    
 end
 %% alpha peak picking and psd visualization...
 peak_pos = 27;
@@ -86,12 +90,11 @@ ylabel('PSD (dB)','Color','w');
 xlabel('Freq. (Hz)','Color','w');
 title('Power Spectral Density','Color','w');
 
-homedir =cd; 
-resultdir = [homedir,'/result/'];
+% Saving PowerSpectral Density Figure
+homedir =cd;
+resultdir = [homedir,resultFolderByOS];
 cd(resultdir)
-
 savefig('Power_Spectral_Density'),close all;
-
 cd(homedir)
 
 pause(1e-10);
@@ -118,12 +121,11 @@ az = 0; el = 0;
 view(az, el);
 title('Scalp','Color','w','FontSize',16);
 
+%Saving Scalp figure
 homedir =cd; 
-resultdir = [homedir,'/result/'];
+resultdir = [homedir,resultFolderByOS];
 cd(resultdir)
-
 savefig('Scalp_1'),close all;
-
 cd(homedir)
 
 temp_diag  = diag(diag(abs(Svv_inv)));
@@ -162,12 +164,11 @@ view(az,el);
 colormap(gca,cmap_a);
 title('BC-VARETA','Color','w','FontSize',16);
 
+%Saving BC_Vareta_1 Figure
 homedir =cd; 
-resultdir = [homedir,'/result/'];
+resultdir = [homedir,resultFolderByOS];
 cd(resultdir)
-
 savefig('BC_VARETA_1'),close all;
-
 cd(homedir);
 
 temp_iv    = abs(SJJ);
@@ -197,12 +198,12 @@ colormap(gca,cmap_c);
 axis square;
 title('BC-VARETA','Color','w','FontSize',16);
 
-
+%Saving BC_Vareta_2 figure  
 homedir =cd; 
-resultdir = [homedir,'/result/'];
+resultdir = [homedir,resultFolderByOS];
 cd(resultdir)
-
 savefig('BC_VARETA_2'),close all;
+
 pause(1e-12);
 %% saving...
 save('EEG_real.mat','ThetaJJ','SJJ','indms');
