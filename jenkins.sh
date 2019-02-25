@@ -7,7 +7,7 @@ if [[ $1 = 'run' ]];
       /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main.m
   elif [[ $1 = 'delivery' ]];
     then
-      tar fcz /root/matlab/$7/$7.tar.gz --absolute-names /root/matlab/$7/results/
+      tar fcz /root/matlab/$7/$7.tar.gz --absolute-names /root/matlab/$7/result/
       if [ -d "/media/DATA/FTP/Matlab/BC-Vareta/$2" ]
        then
 	  	   mv /root/matlab/$7/$7.tar.gz /media/DATA/FTP/Matlab/BC-Vareta/$2
