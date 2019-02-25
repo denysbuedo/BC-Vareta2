@@ -28,8 +28,7 @@ if ispc
 end 
 
 % Loading Color Map file
-mycolormap = string([dataFolderBySO,'mycolormap_brain_basic_conn.mat']);
-load(mycolormap);
+load('mycolormap_brain_basic_conn.mat');
 
 % Loading data 
 EEG_file = string([dataFolderBySO, getData('EEG')]);
