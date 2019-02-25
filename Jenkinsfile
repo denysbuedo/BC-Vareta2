@@ -77,7 +77,7 @@ node{
 			} ---*/           
        		echo "--- Run Matlab command ---"
         	sh 'ssh -o StrictHostKeyChecking=no root@192.168.17.129'
-		sh "ssh root@192.168.17.129 chmod +x /root/matlab/$currentBuildName/jenkins.sh"
+			sh "ssh root@192.168.17.129 chmod +x /root/matlab/$currentBuildName/jenkins.sh"
         	sh "ssh root@192.168.17.129 /root/matlab/$currentBuildName/jenkins.sh run $owner_name $eeg $leadfield $surface $scalp $currentBuildName"	
 		}
 	}
