@@ -44,7 +44,7 @@ node{
   		sh "mkdir $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/result"
 		
 		//--- Moving data files to matlab workspace
-		sh "mv $JENKINS_HOME/jobs/$JOB_NAME/workspace/* $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
+		sh "cp $JENKINS_HOME/jobs/$JOB_NAME/workspace/* $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName"
 		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/xml_data_descriptor.xml $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data"
 		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$eeg $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data"
 		sh "mv $JENKINS_HOME/jobs/BC-Vareta/builds/$build_ID/fileParameters/$leadfield $JENKINS_HOME/jobs/$JOB_NAME/builds/$BUILD_ID/$currentBuildName/data"
