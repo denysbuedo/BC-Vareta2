@@ -1,6 +1,7 @@
 #!/bin/bash
 if [[ $1 = 'run' ]];
   then
+      cd /root/matlab/$7/
       /usr/local/MATLAB/R2018a/bin/matlab -nodisplay < /root/matlab/$7/Main.m
   elif [[ $1 = 'test' ]];
     then
